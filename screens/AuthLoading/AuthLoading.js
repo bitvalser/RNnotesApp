@@ -1,7 +1,10 @@
 import React from 'react';
-import { ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import Colors from '../../core/constants/Colors';
+import { connect } from 'react-redux';
+import { initAuthState } from '../../redux/actions/authorization';
 
-export default class AuthLoadingScreen extends React.Component {
+class AuthLoadingScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -10,17 +13,14 @@ export default class AuthLoadingScreen extends React.Component {
     this.checkState();
   }
 
-  checkState = async () => {
-    const auth = true;
-    setTimeout(() => {
-      this.props.navigation.navigate(auth ? 'Main' : 'Auth');
-    }, 1000);
+  checkState = () => {
+    this.props.initAuth();
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <ActivityIndicator />
+        {this.props.isLoading ? <ActivityIndicator size="large" color={Colors.tintColor} /> : null}
       </View>
     );
   }
@@ -35,3 +35,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   }
 });
+
+export default connect(
+  state => {
+    return {
+      isLoading: state.authorization.isLoading
+    };
+  },
+  dispatch => ({
+    initAuth: () => {
+      dispatch(initAuthState());
+    }
+  })
+)(AuthLoadingScreen);

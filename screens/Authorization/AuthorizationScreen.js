@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableNativeFeedback, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, StyleSheet, Text, TouchableNativeFeedback, TouchableOpacity, ActivityIndicator } from 'react-native';
 import AuthTextInputComponent from '../../core/components/AuthTextInputComponent';
 import Colors from '../../core/constants/Colors';
+import { connect } from 'react-redux';
+import { loginUser } from '../../redux/actions/authorization';
 
-export default class AuthorizationScreen extends React.Component {
+class AuthorizationScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
@@ -15,17 +17,19 @@ export default class AuthorizationScreen extends React.Component {
     };
   }
   login = () => {
-    Alert.alert('login', `${this.state.login} ${this.state.password}`);
+    this.props.login(this.state.login, this.state.password);
   };
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Notes App</Text>
         <Text style={styles.subHeader}>react native edition</Text>
+        {this.props.isLoading ? <ActivityIndicator style={styles.loading} size="large" color="#FFFF00" /> : null}
         <AuthTextInputComponent onChangeText={value => this.setState({ login: value })} placeholder="Enter login..." />
         <AuthTextInputComponent
           onChangeText={value => this.setState({ password: value })}
           placeholder="Enter password..."
+          type="password"
         />
         <TouchableNativeFeedback onPress={this.login}>
           <View style={styles.login}>
@@ -50,7 +54,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 40,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   subHeader: {
     marginBottom: 30
@@ -69,5 +73,21 @@ const styles = StyleSheet.create({
   },
   loginText: {
     fontWeight: 'bold'
+  },
+  loading: {
+    marginBottom: 30
   }
 });
+
+export default connect(
+  state => {
+    return {
+      isLoading: state.authorization.isLoading
+    };
+  },
+  dispatch => ({
+    login: (login, password) => {
+      dispatch(loginUser(login, password));
+    }
+  })
+)(AuthorizationScreen);

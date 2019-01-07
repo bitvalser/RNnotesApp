@@ -22,6 +22,7 @@ export default class AuthTextInputComponent extends React.Component {
       placeholderTextColor="white"
       selectionColor="white"
       value={this.state.login}
+      secureTextEntry={this.props.type === 'password'}
     />
     );
   }
