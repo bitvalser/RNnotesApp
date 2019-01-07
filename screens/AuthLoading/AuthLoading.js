@@ -11,7 +11,7 @@ export default class AuthLoadingScreen extends React.Component {
   }
 
   checkState = async () => {
-    const auth = false;
+    const auth = true;
     setTimeout(() => {
       this.props.navigation.navigate(auth ? 'Main' : 'Auth');
     }, 1000);
