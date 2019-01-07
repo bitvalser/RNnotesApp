@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 export default class NoteDetailScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
@@ -14,7 +14,8 @@ export default class NoteDetailScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>{JSON.stringify(this.note)}</Text>
+        <Image style={styles.image} resizeMode="cover" source={{ uri: this.note.image }} />
+        <Text style={styles.description}>{this.note.text}</Text>
       </View>
     );
   }
@@ -24,5 +25,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff'
+  },
+  image: {
+    width: '100%',
+    height: 200
+  },
+  description: {
+    margin: 5
   }
 });
