@@ -6,9 +6,11 @@ import TabBarIcon from '../core/components/TabBarIcon';
 import NotesScreen from '../screens/Notes/NotesScreen';
 import AddNoteScreen from '../screens/AddNote/AddNoteScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
+import NoteDetailScreen from '../screens/Notes/NoteDetail/NoteDetailScreen';
 
 const NotesStack = createStackNavigator({
-  Notes: NotesScreen
+  Notes: NotesScreen,
+  NoteDetail: NoteDetailScreen
 });
 
 NotesStack.navigationOptions = {
