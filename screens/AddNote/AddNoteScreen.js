@@ -8,9 +8,10 @@ import {
   Alert,
   PermissionsAndroid,
   TextInput,
-  Text
+  Text,
+  ScrollView
 } from 'react-native';
-import { ImagePicker } from 'expo';
+import { ImagePicker, MapView } from 'expo';
 import { connect } from 'react-redux';
 import Colors from '../../core/constants/Colors';
 import Layout from '../../core/constants/Layout';
@@ -28,9 +29,13 @@ class AddNoteScreen extends React.Component {
     this.state = {
       image: null,
       text: '',
-      header: ''
+      header: '',
+      coordinate: null
     };
   }
+  setCoordinates = coordinate => {
+    this.setState({ coordinate });
+  };
   imageAlert = () => {
     Alert.alert('Take image', 'Select a method to get an image.', [
       { text: 'Cancel', onPress: () => {}, style: 'cancel' },
@@ -57,57 +62,78 @@ class AddNoteScreen extends React.Component {
     this.props.addNewNote({
       header: this.state.header,
       text: this.state.text,
-      image: this.state.image
+      image: this.state.image,
+      coordinate: this.state.coordinate
     });
     this.setState({
       image: null,
       text: '',
       header: ''
-    })
+    });
   };
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.label}>Header</Text>
-        <TextInput
-          onChangeText={value => this.setState({ header: value })}
-          value={this.state.header}
-          style={styles.textInput}
-          placeholder="Enter Descrption..."
-        />
-        <Text style={styles.label}>Description</Text>
-        <TextInput
-          multiline={true}
-          numberOfLines={4}
-          onChangeText={value => this.setState({ text: value })}
-          value={this.state.text}
-          style={styles.textInput}
-          placeholder="Enter Descrption..."
-        />
-        <TouchableOpacity onPress={this.imageAlert}>
-          {!this.state.image ? (
-            <View style={styles.imagePicker}>
-              <Image style={styles.imageIcon} source={require('../../assets/images/addImage.png')} />
+      <ScrollView>
+        <View style={styles.container}>
+          <Text style={styles.label}>Header</Text>
+          <TextInput
+            onChangeText={value => this.setState({ header: value })}
+            value={this.state.header}
+            style={styles.textInput}
+            placeholder="Enter Descrption..."
+          />
+          <Text style={styles.label}>Description</Text>
+          <TextInput
+            multiline={true}
+            numberOfLines={4}
+            onChangeText={value => this.setState({ text: value })}
+            value={this.state.text}
+            style={styles.textInput}
+            placeholder="Enter Descrption..."
+          />
+          <TouchableOpacity onPress={this.imageAlert}>
+            {!this.state.image ? (
+              <View style={styles.imagePicker}>
+                <Image style={styles.imageIcon} source={require('../../assets/images/addImage.png')} />
+              </View>
+            ) : (
+              <View style={styles.imageContainer}>
+                <Image style={styles.image} resizeMode="cover" source={{ uri: this.state.image }} />
+                <Button
+                  title="Remove image"
+                  onPress={() => this.setState({ image: null })}
+                  color={Colors.dangerBackground}
+                />
+              </View>
+            )}
+          </TouchableOpacity>
+          {this.state.coordinate ? (
+            <View style={styles.location}>
+              <Text>{`lat: ${this.state.coordinate.latitude} lng: ${this.state.coordinate.longitude}`}</Text>
+              <Button
+                title="Remove Location"
+                onPress={() => this.setState({ coordinate: null })}
+                color={Colors.dangerBackground}
+              />
             </View>
           ) : (
-            <View style={styles.imageContainer}>
-              <Image style={styles.image} resizeMode="cover" source={{ uri: this.state.image }} />
+            <View style={styles.location}>
               <Button
-                title="Remove image"
-                onPress={() => this.setState({ image: null })}
+                title="Add Location"
+                onPress={() => this.props.navigation.navigate('Map', { setCoordinates: this.setCoordinates })}
                 color={Colors.dangerBackground}
               />
             </View>
           )}
-        </TouchableOpacity>
-        <View style={styles.addNote}>
-          <Button
-            title="Add Note"
-            onPress={this.addNote}
-            disabled={this.state.header.length < 5 || this.state.text.length < 10}
-          />
+          <View style={styles.addNote}>
+            <Button
+              title="Add Note"
+              onPress={this.addNote}
+              disabled={this.state.header.length < 5 || this.state.text.length < 10}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -116,7 +142,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    paddingBottom: 40
   },
   imagePicker: {
     borderRadius: 10,
@@ -156,6 +183,14 @@ const styles = StyleSheet.create({
   addNote: {
     marginLeft: 4,
     width: Layout.window.width - 8
+  },
+  location: {
+    borderRadius: 10,
+    justifyContent: 'center',
+    margin: 10,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#cecece'
   }
 });
 

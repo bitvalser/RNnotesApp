@@ -7,6 +7,7 @@ import NotesScreen from '../screens/Notes/NotesScreen';
 import AddNoteScreen from '../screens/AddNote/AddNoteScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import NoteDetailScreen from '../screens/Notes/NoteDetail/NoteDetailScreen';
+import MapScreen from '../screens/AddNote/Map/MapScreen';
 
 const NotesStack = createStackNavigator({
   Notes: NotesScreen,
@@ -24,7 +25,8 @@ NotesStack.navigationOptions = {
 };
 
 const AddNoteScreenStack = createStackNavigator({
-  AddNote: AddNoteScreen
+  AddNote: AddNoteScreen,
+  Map: MapScreen
 });
 
 AddNoteScreenStack.navigationOptions = {

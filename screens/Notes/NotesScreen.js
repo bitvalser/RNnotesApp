@@ -19,7 +19,7 @@ class NotesScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.props.isLoading ? <ActivityIndicator size="large" color={Colors.tintColor} /> : null}
+        {this.props.isLoading ? <ActivityIndicator style={styles.loading} size="large" color={Colors.tintColor} /> : null}
         <FlatList
           style={{ width: '100%' }}
           data={Object.keys(this.props.data)}
@@ -34,7 +34,11 @@ class NotesScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    paddingBottom: 5
+  },
+  loading: {
+    top: '50%'
   }
 });
 
