@@ -5,7 +5,9 @@ export default class NoteComponent extends React.Component {
   render() {
     return (
       <View elevation={5} style={styles.container}>
-        <Image style={styles.image} resizeMode="cover" source={{ uri: this.props.note.image }} />
+        {this.props.note.image ? (
+          <Image style={styles.image} resizeMode="cover" source={{ uri: this.props.note.image }} />
+        ) : null}
         <Text style={styles.header}>{this.props.note.header}</Text>
         <Text style={styles.text}>{this.props.note.text}</Text>
         <Button

@@ -11,10 +11,12 @@ import {
   Text
 } from 'react-native';
 import { ImagePicker } from 'expo';
+import { connect } from 'react-redux';
 import Colors from '../../core/constants/Colors';
 import Layout from '../../core/constants/Layout';
+import { addNote } from '../../redux/actions/notes';
 
-export default class AddNoteScreen extends React.Component {
+class AddNoteScreen extends React.Component {
   static navigationOptions = {
     title: 'Add Note'
   };
@@ -52,7 +54,16 @@ export default class AddNoteScreen extends React.Component {
     }
   };
   addNote = () => {
-    Alert.alert(this.state.header, this.state.text);
+    this.props.addNewNote({
+      header: this.state.header,
+      text: this.state.text,
+      image: this.state.image
+    });
+    this.setState({
+      image: null,
+      text: '',
+      header: ''
+    })
   };
   render() {
     return (
@@ -90,7 +101,11 @@ export default class AddNoteScreen extends React.Component {
           )}
         </TouchableOpacity>
         <View style={styles.addNote}>
-          <Button title="Add Note" onPress={this.addNote} />
+          <Button
+            title="Add Note"
+            onPress={this.addNote}
+            disabled={this.state.header.length < 5 || this.state.text.length < 10}
+          />
         </View>
       </View>
     );
@@ -101,7 +116,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   imagePicker: {
     borderRadius: 10,
@@ -143,3 +158,16 @@ const styles = StyleSheet.create({
     width: Layout.window.width - 8
   }
 });
+
+export default connect(
+  state => {
+    return {
+      isLoading: state.notes.isLoading
+    };
+  },
+  dispatch => ({
+    addNewNote: note => {
+      dispatch(addNote(note));
+    }
+  })
+)(AddNoteScreen);

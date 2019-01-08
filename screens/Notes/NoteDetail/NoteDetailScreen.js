@@ -14,7 +14,7 @@ export default class NoteDetailScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.image} resizeMode="cover" source={{ uri: this.note.image }} />
+        {this.note.image ? <Image style={styles.image} resizeMode="cover" source={{ uri: this.note.image }} /> : null}
         <Text style={styles.description}>{this.note.text}</Text>
       </View>
     );

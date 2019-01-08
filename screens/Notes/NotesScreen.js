@@ -1,40 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+import { connect } from 'react-redux';
+import Colors from '../../core/constants/Colors';
 import NoteComponent from './components/NoteComponent';
+import { initNotes } from '../../redux/actions/notes';
 
-export default class NotesScreen extends React.Component {
+class NotesScreen extends React.Component {
   static navigationOptions = {
     title: 'Notes'
   };
-
+  constructor(props) {
+    super(props);
+    this.initNotes();
+  }
+  initNotes = () => {
+    this.props.initNotesData();
+  };
   render() {
     return (
       <View style={styles.container}>
+        {this.props.isLoading ? <ActivityIndicator size="large" color={Colors.tintColor} /> : null}
         <FlatList
           style={{ width: '100%' }}
-          data={[
-            {
-              header: 'hedaer1',
-              text: 'text1',
-              image: 'https://e3.365dm.com/18/01/768x432/skysports-ocean-rescuenew_4213727.jpg?20180124154904'
-            },
-            {
-              header: 'hedaer2',
-              text: 'text2',
-              image: 'https://e3.365dm.com/18/01/768x432/skysports-ocean-rescuenew_4213727.jpg?20180124154904'
-            },
-            {
-              header: 'hedaer3',
-              text: 'text3',
-              image: 'https://e3.365dm.com/18/01/768x432/skysports-ocean-rescuenew_4213727.jpg?20180124154904'
-            },
-            {
-              header: 'hedaer4',
-              text: 'text4',
-              image: 'https://e3.365dm.com/18/01/768x432/skysports-ocean-rescuenew_4213727.jpg?20180124154904'
-            }
-          ]}
-          renderItem={({ item }) => <NoteComponent note={item} navigation={this.props.navigation} />}
+          data={Object.keys(this.props.data)}
+          renderItem={({ item }) => <NoteComponent note={this.props.data[item]} navigation={this.props.navigation} />}
           keyExtractor={(item, index) => `note${index}`}
         />
       </View>
@@ -48,3 +37,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   }
 });
+
+export default connect(
+  state => {
+    return {
+      isLoading: state.notes.isLoading,
+      data: state.notes.data
+    };
+  },
+  dispatch => ({
+    initNotesData: () => {
+      dispatch(initNotes());
+    }
+  })
+)(NotesScreen);

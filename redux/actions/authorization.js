@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import NavigationService from '../../navigation/NavigationService';
 
 export const AuthAction = {
