@@ -71,7 +71,8 @@ class AddNoteScreen extends React.Component {
     this.setState({
       image: null,
       text: '',
-      header: ''
+      header: '',
+      coordinate: null
     });
   };
   render() {
