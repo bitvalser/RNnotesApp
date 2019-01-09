@@ -59,12 +59,15 @@ class AddNoteScreen extends React.Component {
     }
   };
   addNote = () => {
-    this.props.addNewNote({
-      header: this.state.header,
-      text: this.state.text,
-      image: this.state.image,
-      coordinate: this.state.coordinate
-    });
+    this.props.addNewNote(
+      {
+        header: this.state.header,
+        text: this.state.text,
+        image: this.state.image,
+        coordinate: this.state.coordinate
+      },
+      this.props.user.uid
+    );
     this.setState({
       image: null,
       text: '',
@@ -129,7 +132,7 @@ class AddNoteScreen extends React.Component {
             <Button
               title="Add Note"
               onPress={this.addNote}
-              disabled={this.state.header.length < 5 || this.state.text.length < 10}
+              disabled={this.state.header.length < 3 || this.state.text.length < 10}
             />
           </View>
         </View>
@@ -197,12 +200,13 @@ const styles = StyleSheet.create({
 export default connect(
   state => {
     return {
-      isLoading: state.notes.isLoading
+      isLoading: state.notes.isLoading,
+      user: state.authorization.data.user
     };
   },
   dispatch => ({
-    addNewNote: note => {
-      dispatch(addNote(note));
+    addNewNote: (note, uid) => {
+      dispatch(addNote(note, uid));
     }
   })
 )(AddNoteScreen);

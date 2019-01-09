@@ -2,7 +2,7 @@ import { NotesAction } from '../actions/notes';
 
 const initialState = {
   isLoading: false,
-  data: {}
+  data: null
 };
 
 export const notes = (state = initialState, action) => {
@@ -10,7 +10,8 @@ export const notes = (state = initialState, action) => {
     case NotesAction.INIT_NOTES:
       return {
         ...state,
-        isLoading: true
+        isLoading: true,
+        data: null
       };
     case NotesAction.UPDATE_NOTES:
       return {

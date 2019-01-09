@@ -8,11 +8,12 @@ export const NotesAction = {
   ADD_NOTE_COMPLETE: 'ADD_NOTE_COMPLETE'
 };
 
-export const addNote = note => dispatch => {
+export const addNote = (note, uid) => dispatch => {
   firebase
     .database()
     .ref()
     .child('notes')
+    .child(uid)
     .push(note, () => {
       Notifications.presentLocalNotificationAsync({
         title: note.header,
@@ -25,7 +26,7 @@ export const addNote = note => dispatch => {
     });
 };
 
-export const initNotes = () => dispatch => {
+export const initNotes = uid => dispatch => {
   if (Platform.OS === 'android') {
     Notifications.createChannelAndroidAsync('notes-messages', {
       name: 'Notes messages',
@@ -37,9 +38,8 @@ export const initNotes = () => dispatch => {
     .database()
     .ref()
     .child('notes')
+    .child(uid)
     .on('value', e => {
-      if (e.val()) {
-        dispatch({ type: NotesAction.UPDATE_NOTES, payload: e.val() });
-      }
+      dispatch({ type: NotesAction.UPDATE_NOTES, payload: e.val() });
     });
 };
