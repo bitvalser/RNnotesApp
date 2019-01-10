@@ -8,6 +8,7 @@ import AddNoteScreen from '../screens/AddNote/AddNoteScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import NoteDetailScreen from '../screens/Notes/NoteDetail/NoteDetailScreen';
 import MapScreen from '../screens/AddNote/Map/MapScreen';
+import SuperSecretScreen from '../screens/Profile/SuperSecret/SuperSecretScreen'
 
 const NotesStack = createStackNavigator({
   Notes: NotesScreen,
@@ -35,7 +36,8 @@ AddNoteScreenStack.navigationOptions = {
 };
 
 const ProfileStack = createStackNavigator({
-  Profile: ProfileScreen
+  Profile: ProfileScreen,
+  SuperSecret: SuperSecretScreen
 });
 
 ProfileStack.navigationOptions = {

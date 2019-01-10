@@ -15,6 +15,7 @@ class ProfileScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.email}>{this.props.user.email}</Text>
+        <Button title="Super secret option" onPress={() => { this.props.navigation.navigate('SuperSecret') }} color={Colors.warningBackground} />
         <Button title="Logout" onPress={this.logout} color={Colors.dangerBackground} />
       </View>
     );
