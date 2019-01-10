@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import { MapView, Audio } from 'expo';
-import Colors from '../../../core/constants/Colors';
 
 export default class MapScreen extends React.Component {
   static navigationOptions = {
@@ -17,7 +16,7 @@ export default class MapScreen extends React.Component {
   }
   componentDidMount = () => {
     this.playMusic();
-  }
+  };
   playMusic = async () => {
     try {
       await this.soundObject.loadAsync(require('../../../assets/sounds/sanFrancisko.mp3'));
@@ -28,7 +27,7 @@ export default class MapScreen extends React.Component {
   };
   componentWillUnmount = () => {
     this.soundObject.stopAsync();
-  }
+  };
   setMarker = event => {
     this.setState({
       coordinate: event.nativeEvent.coordinate
@@ -38,22 +37,18 @@ export default class MapScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.isLoading ? (
-          <ActivityIndicator style={styles.loading} size="large" color={Colors.tintColor} />
-        ) : (
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421
-            }}
-            onPress={this.setMarker}
-          >
-            <MapView.Marker coordinate={this.state.coordinate} />
-          </MapView>
-        )}
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          }}
+          onPress={this.setMarker}
+        >
+          <MapView.Marker coordinate={this.state.coordinate} />
+        </MapView>
       </View>
     );
   }
@@ -66,8 +61,5 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1
-  },
-  loading: {
-    top: '50%'
   }
 });
